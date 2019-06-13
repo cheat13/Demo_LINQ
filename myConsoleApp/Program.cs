@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using myConsoleApp.Models;
+using System.Collections;
 
 namespace myConsoleApp
 {
@@ -11,21 +12,21 @@ namespace myConsoleApp
         public static List<TeacherInfo> TchLst = TeacherManage.TeacherLst;
         static void Main(string[] args)
         {
-            var query = StdLst
+            var qry = StdLst
                 .SelectMany(std =>
-                    std.SubjectLst.Where(sub => sub.Score >= 80),
-                    (std, subject) =>
+                    std.SubjectLst,
+                    (std, sub) =>
                         new
                         {
                             Name = std.Name,
-                            Subject = subject.SubjectInfo.Name,
-                            Score = subject.Score,
+                            Subject = sub.SubjectInfo.Name,
+                            Score = sub.Score
                         })
-                .OrderBy(qry => qry.Subject)
-                .ThenByDescending(qry => qry.Score);
+                .OrderBy(std => std.Subject)
+                .ThenByDescending(std => std.Score);
 
-            foreach (var std in query)
-                Console.WriteLine(std);
+            foreach (var item in qry)
+                Console.WriteLine(item);
         }
     }
 }
